@@ -1,6 +1,4 @@
 torch
 transformers
-faiss-cpu
 fastapi
 uvicorn
-numpy

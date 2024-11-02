@@ -1,71 +1,104 @@
-# Advanced LLM Assistant
 
-This project is designed to create a highly optimized assistant powered by Large Language Models (LLM) for specific domains, with efficiency improvements for real-time response and accurate answers from integrated databases.
+# Generative AI Assistant
+
+This project is a **Generative AI Assistant** built using the GPT-2 model. It leverages OpenAI's Transformer architecture to generate text-based responses to user prompts, providing a framework for a simple and customizable text generation API.
 
 ## Project Structure
 
-- **data/** - Directory for dataset storage (not included in the repository).
-- **models/** - Directory for saved models (not included in the repository).
-- **src/** - Main code for the assistant, including data loading, model configuration, API, and utility functions.
-- **tests/** - Unit tests for the different components of the project.
+The structure of the project is organized as follows:
 
-## Getting Started
-
-### Prerequisites
-
-Make sure you have Python installed (preferably Python 3.8 or higher). Install the dependencies using:
-
-```bash
-pip install -r requirements.txt
+```
+.
+├── .github               # GitHub-specific configurations (e.g., workflows)
+├── data
+│   └── model             # Directory for storing model and tokenizer files
+│       ├── config.json
+│       ├── generation_config.json
+│       ├── merges.txt
+│       ├── model.safetensors
+│       ├── special_tokens_map.json
+│       ├── tokenizer_config.json
+│       ├── tokenizer.json
+│       ├── vocab.json
+│       └── vocab.txt
+├── models                # (Optional) Additional or alternative models can be stored here
+├── src                   # Source code for the project
+│   ├── __init__.py       # Package initialization
+│   ├── api.py            # FastAPI app that provides endpoints for text generation
+│   ├── model.py          # Main model class for loading and generating responses
+│   └── utils.py          # Utility functions used across the project
+├── tests                 # Unit tests for the project
+│   ├── __init__.py
+│   ├── test_api.py       # Tests for the API endpoints
+│   ├── test_model.py     # Tests for the model's functionality
+│   └── utils.py          # Additional test utilities if needed
+├── venv                  # Virtual environment for Python dependencies
+├── .gitignore            # Specifies files and folders to ignore in Git
+├── LICENSE               # Project license
+├── README.md             # Project documentation
+├── requirements.txt      # Python dependencies for the project
+└── setup.py              # Setup script for installing the package
 ```
 
-### Project Setup
+## Installation
 
 1. **Clone the repository**:
+
    ```bash
-   git clone https://github.com/YOUR_USERNAME/advanced-llm-assistant.git
-   cd advanced-llm-assistant
+   git clone https://github.com/Vitmer/generative-ai-assistant.git
+   cd generative-ai-assistant
    ```
 
-2. **Set up directories**:
-   Create directories for models and data (if they do not already exist).
+2. **Set up a virtual environment**:
+
    ```bash
-   mkdir data models
+   python3 -m venv venv
+   source venv/bin/activate
    ```
 
-3. **Environment Variables**:
-   Create a `.env` file to store any API keys or configuration variables needed for accessing external resources or databases (if required by your application).
+3. **Install the dependencies**:
 
-### Usage
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-To start the API server, run:
+4. **Download the GPT-2 model**:
 
-```bash
-python src/api.py
-```
+   Run the `download_model.py` script to download the GPT-2 model files to `data/model`:
 
-This will initialize the assistant, allowing you to interact with it through API endpoints (designed with FastAPI).
+   ```bash
+   python download_model.py
+   ```
 
-### Directory Details
+## Usage
 
-- **`src/data_loader.py`** - Functions for loading and preprocessing data from different sources.
-- **`src/model.py`** - Model loading and configuration for the assistant’s language model.
-- **`src/retriever.py`** - Code for integrating with vector databases, allowing the assistant to fetch relevant information quickly.
-- **`src/api.py`** - API server for handling requests to the assistant.
-- **`src/utils.py`** - Utility functions used across the project.
+1. **Run the FastAPI server**:
 
-### Testing
+   ```bash
+   uvicorn src.api:app --reload
+   ```
 
-Unit tests are included in the `tests` directory. To run the tests, execute:
+2. **Access the API documentation**:
 
-```bash
-python -m unittest discover tests
-```
+   Open your browser and go to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) to see the interactive Swagger documentation.
 
-### Contributing
+3. **Example API call**:
 
-Pull requests are welcome. For major changes, please open an issue first to discuss the changes you’d like to make. 
+   You can use `curl` to test the `/generate` endpoint:
 
-### License
+   ```bash
+   curl -X 'POST'      'http://127.0.0.1:8000/generate'      -H 'accept: application/json'      -H 'Content-Type: application/json'      -d '{ "prompt": "What is the meaning of life?" }'
+   ```
 
-[MIT](LICENSE)
+   The server will respond with a generated answer based on the input prompt.
+
+## Project Components
+
+- **FastAPI**: Provides the web framework for creating API endpoints.
+- **Transformers**: Used for loading GPT-2 and generating text responses.
+- **Data and Model Files**: The `data/model` folder contains all necessary files for the GPT-2 model and tokenizer.
+- **Testing**: Unit tests for the API and model functionality are located in the `tests` folder.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
